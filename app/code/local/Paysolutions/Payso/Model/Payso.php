@@ -86,12 +86,15 @@ class Paysolutions_Payso_Model_Payso extends Mage_Payment_Model_Method_Abstract 
 		$orderId = $order->getIncrementId();
 		$item_names = array();
 		$items = $order->getItemsCollection();
+		
 		foreach ($items as $item){
 			$item_name = $item->getName();
 			$Email = $item->getEmail();
  		  	$qty = number_format($item->getQtyOrdered(), 0, '.', ' ');
 			$item_names[] = $item_name . ' x ' . $qty;
 		}	
+		
+		$paysolutions_args['Email'] = $order->getCustomerEmail();
 		$paysolutions_args['item_name'] 	= sprintf( __('Order %s '), $orderId ) . " - " . implode(', ', $item_names);
 		$orderReferenceValue = $this->getCheckout()->getLastRealOrderId();
 		$merchantId = $this->getConfigData('merchant_id');
